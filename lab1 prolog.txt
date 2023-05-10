@@ -1,0 +1,74 @@
+search(X, cons(X, _)).
+search(X, cons(_, Xs)) :- search(X, Xs).
+search2(X, cons(X, cons(X, _))).
+search2(X, cons(_, Xs)) :- search(X, Xs).
+search_two(X, cons(X, cons(_, cons(X, _)))).
+search_two(X, cons(_, Xs)) :- search_two(X, Xs).
+search_anytwo(X, cons(X, cons(X, _))).
+search_anytwo(X, cons(X, cons(_, cons(X, _)))).
+search_anytwo(X, cons(_, Xs)) :- search_anytwo(X, Xs).
+size(nil, zero).
+size(cons(X, Xs), s(E)) :- size(Xs, E).
+sum(zero, N, N).
+sum(s(N), M, s(O)) :- sum(N, M, O).
+sum_list(nil, zero).
+sum_list(cons(zero, nil), zero).
+sum_list(cons(H, T), M) :- sum_list(T, S), sum(H, S, M).
+count(List, E, N) :- count(List, E, zero, N).
+count(nil, E, N, N).
+count(cons(E, L), E, N, M) :- count(L, E, s(N), M).
+count(cons(E, L), E2, N, M) :- E \= E2, count(L, E, N, M).
+greater(s(_), zero).
+greater(s(M), s(N)) :- greater(M, N).
+max(nil, Max, Max).
+max(cons(H, T), Max) :- max(T, H, Max).
+max(cons(H, T), Temp, Max) :- greater(H, Temp), max(T, H, Max).
+max(cons(H, T), Temp, Max) :- greater(Temp, H), max(T, Temp, Max).
+max(cons(H, T), Temp, Max) :- Temp = H, max(T, Temp, Max).
+%max(cons(s(s(zero)), cons(s(zero), cons(s(s(s(zero))), nil))), s(zero), Max). 
+%con Max / s(s(s(zero)))
+min(nil, Min, Min).
+min(cons(H, T), Min) :- min(T, H, Min).
+min(cons(H, T), Temp, Min) :- less(H, Temp), min(T, H, Min).
+min(cons(H, T), Temp, Min) :- less(Temp, H), min(T, Temp, Min).
+min(cons(H, T), Temp, Min) :- Temp = H, min(T, Temp, Min).
+min-max(cons(H, T), Min, Max) :- max(T, H, Max), min(T, H, Min).
+same(nil, nil).
+same(cons(H, T), cons(H, T)).
+all_bigger(nil, nil).
+all_bigger(cons(s(H), T1), cons(H, T2)) :- all_bigger(T1, T2).
+sublist(nil, _).
+sublist(cons(H, T), L2) :- search(H, L2), sublist(T, L2).
+seq(zero, _ , nil).
+seq(s(N), E, cons(E, T)) :- seq(N, E, T).
+seqR(zero, nil).
+seqR(s(N), cons(H, T)) :- seqR(N, T).
+seqR2(zero, nil).
+seqR2(s(N), cons(H, T)) :- seqR2(N, T).
+
+%last(List, X, M) --> X is the last element of List. M is List with X at the end
+last(cons(E, nil), X, cons(E, cons(X, nil))).
+last(cons(H, T), X, cons(H2, T2)) :- last(T, X, T2).
+%last(cons(zero,cons(s(zero),nil)), zero, cons(zero,cons(s(zero),cons(zero, nil)))). --> yes
+%last(cons(zero,cons(s(zero),nil)), s(s(s(zero))), cons(zero,cons(s(zero),cons(zero, nil)))). --> no
+%last(cons(zero, nil),zero,cons(zero,cons(zero,nil))). --> yes
+%map(List, List2) --> List2 ha gli stessi elementi di List ma aumentati di 1
+map(nil, nil).
+map(cons(H, T), cons(s(H), T2)).
+%map(cons(zero, cons(s(zero), nil)), cons(s(zero), cons(s(s(zero)), nil))). --> yes
+%map(cons(s(zero), cons(s(s(zero)), nil)), cons(s(s(zero)), cons(s(s(s(zero))), nil))). --> yes
+%map(cons(s(zero), nil), cons(zero, nil)). --> no
+%drop(X, List, List2) -->  List2 is List without the first X elements
+drop(X, nil, nil).
+drop(s(X), cons(H, T), L2) :- drop(X, T, L2).
+drop(zero, L, L2) :- same(L, L2).
+%drop(s(s(zero)),cons(zero,cons(zero,cons(zero,nil))),cons(zero,nil)). --> yes
+%drop(s(s(zero)), cons(zero, nil),nil). --> yes
+%drop(s(zero),cons(zero,cons(zero,cons(zero,nil))), cons(zero,cons(zero,cons(zero,nil)))). --> no
+%take(X, List, List2) --> List2 is the first X elements of List
+take(X, nil, nil).
+take(s(X), cons(H, T), cons(H2, T2)) :- take(X, T, T2).
+take(zero, L , nil).
+%take(s(zero), cons(s(s(zero)), cons(zero, nil)), cons(s(s(zero)), nil)). --> yes
+%take(zero, cons(s(s(zero)), cons(zero, nil)), cons(zero, nil)). --> no
+%take(s(s(zero)), cons(s(s(zero)), cons(zero, cons(s(zero), nil))), cons(s(s(zero)), cons(zero, nil))). --> yes
