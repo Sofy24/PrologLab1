@@ -25,8 +25,6 @@ max(cons(H, T), Max) :- max(T, H, Max).
 max(cons(H, T), Temp, Max) :- greater(H, Temp), max(T, H, Max).
 max(cons(H, T), Temp, Max) :- greater(Temp, H), max(T, Temp, Max).
 max(cons(H, T), Temp, Max) :- Temp = H, max(T, Temp, Max).
-%max(cons(s(s(zero)), cons(s(zero), cons(s(s(s(zero))), nil))), s(zero), Max). 
-%con Max / s(s(s(zero)))
 min(nil, Min, Min).
 min(cons(H, T), Min) :- min(T, H, Min).
 min(cons(H, T), Temp, Min) :- less(H, Temp), min(T, H, Min).
